@@ -22,17 +22,17 @@ userRouter.get('/', (req, res, next) => {
 userRouter.post('/signup', (req, res, next) => {
   console.log(req.body);
 
-  if(!req.body.username || !req.body.password) 
+  if(!req.body.email || !req.body.password) 
     return res.json({ success: false, message: 'Please fill all the requried fields' });
 
-  User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+  User.register(new User({email: req.body.email}), req.body.password, (err, user) => {
     if(err) {
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
       console.log('Server error');
       return res.json({err: err});
     }
-    else if(!req.body.username || !req.body.password) {
+    else if(!req.body.email || !req.body.password) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       console.log('Fields error');
