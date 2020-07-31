@@ -3,11 +3,27 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const config = require('./config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
+mongoose.connect(config.url, { useNewUrlParser: true });
+
+mongoose.connection.on('connected', () => {
+  console.log('Connected to database ' + config.url)
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('Cannot connect to MongoDB database! Error: ' + err)
+});
+
 const app = express();
+
+app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
