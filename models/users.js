@@ -9,12 +9,12 @@ const User = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
     }
 });
 
 User.plugin(passportLocalMongoose, {
     usernameField: 'email',
+    usernameUnique: true
 });
 
 module.exports = mongoose.model('User', User);

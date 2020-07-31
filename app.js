@@ -6,7 +6,9 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy
+const JWTStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const config = require('./config');
 const User = require('./models/users');
@@ -24,6 +26,11 @@ mongoose.connection.on('error', (err) => {
   console.log('Cannot connect to MongoDB database! Error: ' + err)
 });
 
+let opts = {};
+
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = config.secret;
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -33,6 +40,19 @@ app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+/* passport.use(new JWTStrategy(opts, (jwt_payload, done) => {
+  User.findOne({_id: jwt_payload._id}, (err, user) => {
+    if(err)
+      return done(err, false);
+    
+    else if(user)
+      return done(null, user);
+
+    else 
+      return done(null, false);
+  });
+})) */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
