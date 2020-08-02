@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/users');
 const config = require('../config');
+const authenticate = require('../authenticate');
 
 userRouter.use(bodyParser.json());
 
@@ -60,6 +61,7 @@ userRouter.post('/signup', (req, res, next) => {
 });
 
 userRouter.post('/login', (req, res, next) => {
+  console.log(JSON.stringify(req.body));
   passport.authenticate('local', function(err, user, info) {
     if(err)
       return next(err);
