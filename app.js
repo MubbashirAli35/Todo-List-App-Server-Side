@@ -16,6 +16,7 @@ const User = require('./models/users');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const todosRouter = require('./routes/todos');
 
 mongoose.connect(config.url, { useNewUrlParser: true });
 
@@ -67,6 +68,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', cors(), usersRouter);
+app.use('/todos', cors(), todosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
