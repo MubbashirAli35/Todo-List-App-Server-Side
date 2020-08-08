@@ -18,7 +18,7 @@ todosRouter.get('/', authenticate.verifyUser, (req, res, next) => {
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        return res.json({message: 'No todos'});        
+        return res.json(todos);        
     }, (err) => next(err))
     .catch((err) => next(err));
 });
