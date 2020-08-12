@@ -37,4 +37,14 @@ todosRouter.post('/new', authenticate.verifyUser, (req, res, next) => {
     .catch((err) => next(err));
 });
 
+todosRouter.post('/delete', authenticate.verifyUser, (req, res, next) => {
+    Todo.findByIdAndRemove(req.body.todoId)
+    .then(() => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({message: 'Todo deleted successfully'});
+    }, err => next(err))
+    .catch(err => next(err));
+});
+
 module.exports = todosRouter;
