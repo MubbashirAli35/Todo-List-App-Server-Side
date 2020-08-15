@@ -38,13 +38,28 @@ todosRouter.post('/new', authenticate.verifyUser, (req, res, next) => {
 });
 
 todosRouter.post('/delete', authenticate.verifyUser, (req, res, next) => {
-    Todo.findByIdAndRemove(req.body.todoId)
+    Todo.findByIdAndDelete(req.body.todoId)
     .then(() => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json({message: 'Todo deleted successfully'});
+        return res.json({message: 'Todo deleted successfully'});
     }, err => next(err))
     .catch(err => next(err));
+});
+
+todosRouter.post('/edit', authenticate.verifyUser, (req, res, next) => {
+    Todo.findByIdAndUpdate(req.body.todoId, {
+        title: req.body.title,
+        description: req.body.description,
+        isCompleted: req.body.isCompleted
+    })
+    .then(() => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        return res.json({
+            message: 'Todo updated Successfully',
+        });
+    }, err => next(err));
 });
 
 module.exports = todosRouter;
