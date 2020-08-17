@@ -50,10 +50,12 @@ userRouter.post('/signup', (req, res, next) => {
           return res.json({err: err});
         }
         passport.authenticate('local')(req, res, () => {
+          const token = jwt.sign({id: user._id}, config.secret, {expiresIn: 3600})
+
           console.log('Hello');
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
-          return res.json({success: true, message: 'Registration Successfull'});
+          return res.json({success: true, message: 'Registration Successfull', token: token});
         })
       })
     }
