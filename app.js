@@ -18,10 +18,13 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const todosRouter = require('./routes/todos');
 
-mongoose.connect(config.url, { useNewUrlParser: true });
+const PORT = process.env.PORT || 8080;
+
+
+mongoose.connect(process.env.MONGODB_URI || config.url, { useNewUrlParser: true });
 
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database ' + config.url)
+  console.log('Connected to database ' + config.url);
 });
 
 mongoose.connection.on('error', (err) => {
